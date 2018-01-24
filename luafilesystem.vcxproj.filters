@@ -15,45 +15,18 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lpeg\lpcap.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lpeg\lpcode.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lpeg\lpprint.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lpeg\lptree.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lpeg\lpvm.c">
+    <ClCompile Include="luafilesystem\src\lfs.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="lpeg\lpcap.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lpeg\lpcode.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lpeg\lpprint.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lpeg\lptree.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lpeg\lptypes.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lpeg\lpvm.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="lpeg\lpeg.def">
+    <None Include="luafilesystem\src\lfs.def">
       <Filter>源文件</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="luafilesystem\src\lfs.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
