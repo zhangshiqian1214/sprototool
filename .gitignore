@@ -55,3 +55,6 @@ debug/lfs.obj
 debug/lfs.Build.CppClean.log
 sprototool.sdf
 *.pdb
+*.obj
+*.tlog
+*.idb
