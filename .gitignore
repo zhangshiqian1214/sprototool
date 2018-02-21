@@ -58,3 +58,4 @@ sprototool.sdf
 *.obj
 *.tlog
 *.idb
+*.so
