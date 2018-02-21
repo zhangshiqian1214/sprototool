@@ -1,5 +1,5 @@
 LUA_CLIB_PATH ?= luaclib
-LUA_INC ?= /lua53
+LUA_INC ?= lua53/src
 CC ?= gcc
 
 SHARED := -fPIC --shared
