@@ -60,3 +60,6 @@ sprototool.sdf
 *.idb
 *.so
 *.o
+*.a
+luabin
+luacbin

@@ -7,7 +7,14 @@ CFLAGS = -g -O2 -Wall -I$(LUA_INC) $(MYCFLAGS)
 LUA_CLIB = lpeg sproto lfs
 PLAT = linux
 
-all : $(foreach v, $(LUA_CLIB), $(LUA_CLIB_PATH)/$(v).so)
+all : luabin \
+	$(foreach v, $(LUA_CLIB), $(LUA_CLIB_PATH)/$(v).so)
+
+luabin:
+	cd lua53 && $(MAKE) $(PLAT) && \
+	mv src/lua ../example/luabin && \
+	mv src/luac ../example/luacbin && \
+	cd ../
 
 $(LUA_CLIB_PATH)/lpeg.so : lpeg/lpcap.c lpeg/lpcode.c lpeg/lpprint.c lpeg/lptree.c lpeg/lpvm.c | $(LUA_CLIB_PATH)
 	$(CC) $(CFLAGS) $(SHARED) -Ilpeg $^ -o $@
