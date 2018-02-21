@@ -59,3 +59,4 @@ sprototool.sdf
 *.tlog
 *.idb
 *.so
+*.o
