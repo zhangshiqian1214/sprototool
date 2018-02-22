@@ -61,5 +61,6 @@ sprototool.sdf
 *.so
 *.o
 *.a
+*.spt
 luabin
 luacbin
