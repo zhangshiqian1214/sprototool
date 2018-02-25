@@ -1,7 +1,6 @@
 .package {
-  protoId 0 : integer   #协议id
+  type 0 : integer      #协议id
   session 1 : integer   #消息id
-  errorcode 2 : integer #错误码
 }
 
 
