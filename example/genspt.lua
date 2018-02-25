@@ -1,9 +1,5 @@
 require "common"
-
-local args = ...
-print(args)
-local sprotodump = require "sprotodump"
-local dump = sprotodump()
-dump:set_dump_path(root.."/proto/")
-dump:load(root.."/proto/", true)
-dump:dump("protocol.spt")
+local args = {...}
+if not args[1] then return print("src not exist") end 
+if not args[2] then return print("des not exist") end
+require("sprotodump")(args[1], args[2])
