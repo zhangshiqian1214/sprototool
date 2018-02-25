@@ -1,5 +1,7 @@
 require "common"
 
+local args = ...
+print(args)
 local sprotodump = require "sprotodump"
 local dump = sprotodump()
 dump:set_dump_path(root.."/proto/")
