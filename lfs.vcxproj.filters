@@ -15,17 +15,17 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="luafilesystem\src\lfs.c">
+    <ClCompile Include="lfs\src\lfs.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="luafilesystem\src\lfs.def">
+    <None Include="lfs\src\lfs.def">
       <Filter>源文件</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="luafilesystem\src\lfs.h">
+    <ClInclude Include="lfs\src\lfs.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

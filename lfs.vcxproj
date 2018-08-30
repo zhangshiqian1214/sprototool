@@ -12,7 +12,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{92F7C3F2-108B-47EC-9C74-2DA00F79AC3A}</ProjectGuid>
-    <RootNamespace>luafilesystem</RootNamespace>
+    <RootNamespace>lfs</RootNamespace>
+    <ProjectName>lfs</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -54,7 +55,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ModuleDefinitionFile>$(ProjectDir)$(ProjectName)\$(ProjectName).def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>$(ProjectDir)$(ProjectName)\src\$(ProjectName).def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -72,18 +73,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="luafilesystem\src\lfs.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="luafilesystem\src\lfs.def" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="luafilesystem\src\lfs.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="lua53.vcxproj">
       <Project>{47eeaf9d-e327-4856-ae5d-6ab8e3a92cb0}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="lfs\src\lfs.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="lfs\src\lfs.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="lfs\src\lfs.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

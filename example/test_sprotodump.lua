@@ -11,4 +11,4 @@ dump:dump("protocol.spb")
 
 
 dump:set_dump_file("protocol.txt")
-dump:dump("protocol.spb", true)
+dump:dump("protocol.txt", true)
