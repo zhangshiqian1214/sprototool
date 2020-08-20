@@ -1,3 +1,0 @@
-LIBRARY sproto.dll
-EXPORTS
-	luaopen_sproto_core

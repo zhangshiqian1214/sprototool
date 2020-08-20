@@ -1,6 +1,4 @@
-local root    = "../"
-package.path  = root .. "lualib/?.lua;"
-package.cpath = root .. "luaclib/?.dll;"
+require "common"
 
 local sproto = require "sproto"
 local print_r = require "print_r"
