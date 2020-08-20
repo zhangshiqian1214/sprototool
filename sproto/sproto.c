@@ -849,6 +849,7 @@ encode_array(sproto_callback cb, struct sproto_arg *args, uint8_t *data, int siz
 	size -= SIZEOF_LENGTH;
 	buffer = data + SIZEOF_LENGTH;
 	switch (args->type) {
+	case SPROTO_TDOUBLE:
 	case SPROTO_TINTEGER: {
 		int noarray;
 		buffer = encode_integer_array(cb,args,buffer,size, &noarray);
@@ -944,6 +945,7 @@ sproto_encode(const struct sproto_type *st, void * buffer, int size, sproto_call
 			args.type = type;
 			args.index = 0;
 			switch(type) {
+			case SPROTO_TDOUBLE:
 			case SPROTO_TINTEGER:
 			case SPROTO_TBOOLEAN: {
 				union {
@@ -1066,6 +1068,7 @@ decode_array(sproto_callback cb, struct sproto_arg *args, uint8_t * stream) {
 	}	
 	stream += SIZEOF_LENGTH;
 	switch (type) {
+	case SPROTO_TDOUBLE:
 	case SPROTO_TINTEGER: {
 		int len = *stream;
 		++stream;
@@ -1177,6 +1180,7 @@ sproto_decode(const struct sproto_type *st, const void * data, int size, sproto_
 				}
 			} else {
 				switch (f->type) {
+				case SPROTO_TDOUBLE:
 				case SPROTO_TINTEGER: {
 					uint32_t sz = todword(currentdata);
 					if (sz == SIZEOF_INT32) {
@@ -1262,15 +1266,15 @@ pack_seg(const uint8_t *src, uint8_t * buffer, int sz, int n) {
 }
 
 static inline void
-write_ff(const uint8_t * src, uint8_t * des, int n) {
-	int i;
-	int align8_n = (n+7)&(~7);
-
+write_ff(const uint8_t * src, const uint8_t * src_end, uint8_t * des, int n) {
 	des[0] = 0xff;
-	des[1] = align8_n/8 - 1;
-	memcpy(des+2, src, n);
-	for(i=0; i< align8_n-n; i++){
-		des[n+2+i] = 0;
+	des[1] = n - 1;
+	if (src + n * 8 <= src_end) {
+		memcpy(des+2, src, n*8);
+	} else {
+		int sz = (int)(src_end - src);
+		memcpy(des+2, src, sz);
+		memset(des+2+sz, 0, n*8-sz);
 	}
 }
 
@@ -1283,6 +1287,7 @@ sproto_pack(const void * srcv, int srcsz, void * bufferv, int bufsz) {
 	int ff_n = 0;
 	int size = 0;
 	const uint8_t * src = srcv;
+	const uint8_t * src_end = (uint8_t *)srcv + srcsz;
 	uint8_t * buffer = bufferv;
 	for (i=0;i<srcsz;i+=8) {
 		int n;
@@ -1306,14 +1311,14 @@ sproto_pack(const void * srcv, int srcsz, void * bufferv, int bufsz) {
 			++ff_n;
 			if (ff_n == 256) {
 				if (bufsz >= 0) {
-					write_ff(ff_srcstart, ff_desstart, 256*8);
+					write_ff(ff_srcstart, src_end, ff_desstart, 256);
 				}
 				ff_n = 0;
 			}
 		} else {
 			if (ff_n > 0) {
 				if (bufsz >= 0) {
-					write_ff(ff_srcstart, ff_desstart, ff_n*8);
+					write_ff(ff_srcstart, src_end, ff_desstart, ff_n);
 				}
 				ff_n = 0;
 			}
@@ -1322,11 +1327,8 @@ sproto_pack(const void * srcv, int srcsz, void * bufferv, int bufsz) {
 		buffer += n;
 		size += n;
 	}
-	if(bufsz >= 0){
-		if(ff_n == 1)
-			write_ff(ff_srcstart, ff_desstart, 8);
-		else if (ff_n > 1)
-			write_ff(ff_srcstart, ff_desstart, srcsz - (intptr_t)(ff_srcstart - (const uint8_t*)srcv));
+	if(bufsz >= 0 && ff_n > 0) {
+		write_ff(ff_srcstart, src_end, ff_desstart, ff_n);
 	}
 	return size;
 }
