@@ -1,3 +1,7 @@
+.Package {
+	type 0 : integer
+	session 1 : integer
+}
 
 .Person {
 	name 0 : string
@@ -15,4 +19,31 @@
 .AddressBook {
 	person 0 : *Person(id)
 	others 1 : *Person
+}
+
+
+foobar 1 {
+	request {
+		what 0 : string
+		boy 1 : Person
+	}
+	response {
+		ok 0 : boolean
+		girls 1 : *Person
+	}
+}
+
+foo 2 {
+	response {
+		ok 0 : boolean
+		addrBooks 1 : *AddressBook
+	}
+}
+
+bar 3 {
+	response nil
+}
+
+blackhole 4 {
+
 }
