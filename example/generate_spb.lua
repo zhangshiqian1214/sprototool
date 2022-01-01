@@ -5,8 +5,8 @@ package.cpath = root.."/luaclib/?.dll;"
 local sprotodump = require "sprotodump"
 
 local dump = sprotodump()
-dump:set_dump_path(root.."/proto/")
-dump:load(root.."/proto/", true)
+dump:set_dump_path("./")
+dump:load("./", true)
 dump:dump("protocol.spb")
 
 

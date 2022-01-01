@@ -1,16 +1,19 @@
 local lfs = require "lfs"
+local class = require "class"
 local parser = require "sprotoparser"
 local base64 = require "base64"
 
-local function find_name(path, patten, intosubdir, result)
+
+
+local function find_dir_files(path, patten, intofolder, result)
 	result = result or {}
 	for file in lfs.dir(path) do
 		if file ~= "." and file ~= ".." then
 			local f = string.gsub(path.."/"..file, "//", "/")
 			local attr = lfs.attributes(f)
 			assert (type(attr) == "table")
-			if attr.mode == "directory" and intosubdir then
-				find_name(f, patten, intosubdir, result)
+			if attr.mode == "directory" and intofolder then
+				find_dir_files(f, patten, intofolder, result)
 			else
 				if string.find(f, patten) ~= nil then
 					table.insert(result, f)
@@ -21,10 +24,55 @@ local function find_name(path, patten, intosubdir, result)
 	return result
 end
 
-local function dump(dump_path, content, isb64)
-	local dump_file = "protocol.spt"
-	local err = "can't open "..dump_path..dump_file
-	local f = assert(io.open(dump_path..dump_file, "w+b"), err)
+local M = class()
+function M:ctor()
+	self._dump_path = nil      -- "./" or "./protocol/"
+	self._sproto_files = {}
+end
+
+function M:set_dump_path(path)
+	self._dump_path = path
+end
+
+function M:set_dump_file(file)
+	self._dump_file = file
+end
+
+function M:load(path, intofolder)
+	local files = find_dir_files(path, "%.sproto", intofolder)
+	for _, file in pairs(files) do
+		self._sproto_files[file] = true
+	end
+end
+
+function M:clear()
+	for k, _ in pairs(self._sproto_files) do
+		self._sproto_files[k] = nil
+	end
+end
+
+function M:parse()
+	local text = ""
+	for path, _ in pairs(self._sproto_files) do
+		local f = assert(io.open(path), "Can't open "..path)
+		local data = f:read "a"
+		text = text .. "\n" .. data
+		f:close()
+	end
+	return parser.parse(text)
+end
+
+function M:dump(dump_file, isb64)
+	dump_file = dump_file or self._dump_file
+	if not dump_file then
+		return
+	end
+	if _G.next(self._sproto_files) == nil then
+		return
+	end
+	local dump_path = self._dump_path or ""
+	local content = self:parse()
+	local f = assert(io.open(dump_path..dump_file, "w+b"), "can't open "..self._dump_path..dump_file)
 	if isb64 then
 		f:write(base64.encode(content))
 	else
@@ -33,29 +81,4 @@ local function dump(dump_path, content, isb64)
   	f:close()
 end
 
-return function(src_path, des_path)
-	if string.sub(src_path, -1) ~= "/" then 
-		src_path = src_path .. "/"
-	end
-	if string.sub(des_path, -1) ~= "/" then
-		des_path = des_path .. "/"
-	end
-	local sproto_files = {}
-	local files = find_name(src_path, "%.sproto", true)
-	for _, file in pairs(files) do
-		sproto_files[file] = true
-	end
-	if not next(sproto_files) then
-		return print("sproto file not exist")
-	end
-
-	local content = ""
-	for path, _ in pairs(sproto_files) do
-		local f = assert(io.open(path), "Can't open "..path)
-		local data = f:read "a"
-		content = content .. "\n" .. data
-		f:close()
-	end
-
-	return dump(des_path, parser.parse(content), false)
-end
+return M
