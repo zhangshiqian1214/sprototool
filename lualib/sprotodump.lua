@@ -38,7 +38,8 @@ function M:set_dump_file(file)
 	self._dump_file = file
 end
 
-function M:load(path, intofolder)
+function M:set_sproto_path(path, intofolder)
+	intofolder = intofolder or true
 	local files = find_dir_files(path, "%.sproto", intofolder)
 	for _, file in pairs(files) do
 		self._sproto_files[file] = true
